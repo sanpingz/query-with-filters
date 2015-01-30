@@ -1,0 +1,24 @@
+#!/bin/bash
+
+PARTITIONS=4096
+N=10
+name=$(hostname -s)
+ppc=$(( PARTITIONS/N ))
+
+case "$name" in
+	client*)
+	idx=${name:(-2):2}
+	if [[ "0${idx:(0):1}" == "00" ]]; then
+		idx=${name:(-1):1}
+	fi
+	r1=$(( (idx-1)*ppc ))
+	r2=$(( idx*ppc ))
+	if [[ $idx -eq $N ]]; then
+		r2=$PARTITIONS
+	fi
+	java -jar target/query-with-filters-3.0.22-jar-with-dependencies.jar "-P $r1-$r2 $@"
+	;;
+	*)
+	java -jar target/query-with-filters-3.0.22-jar-with-dependencies.jar "$@"
+	;;
+esac

@@ -1,0 +1,16 @@
+print 'register udf/profile.lua'
+REGISTER module 'udf/profile.lua'
+print 'create index profileindex'
+CREATE INDEX profileindex ON test.profile (username) STRING
+print 'add records'
+insert into test.profile (PK, username, password) values ('1', 'Charlie', 'cpass')
+insert into test.profile (PK, username, password) values ('2', 'Bill', 'hknfpkj')
+insert into test.profile (PK, username, password) values ('3', 'Doug', 'dj6554')
+insert into test.profile (PK, username, password) values ('4', 'Mary', 'ghjks')
+insert into test.profile (PK, username, password) values ('5', 'Julie', 'zzxzxvv')
+
+print 'query on username'
+select * from test.profile where username = 'Mary'
+
+print 'query for Mary'
+aggregate profile.check_password('ghjks') on test.profile where username = 'Mary'
